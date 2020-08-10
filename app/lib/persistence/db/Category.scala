@@ -25,7 +25,7 @@ case class CategoryTable[P <: JdbcProfile]()(implicit val driver: P)
     //Columns
     /* @1 */ def id      = column[Category.Id]     ("id",         O.UInt64, O.PrimaryKey, O.AutoInc)
     /* @2 */ def name    = column[String]          ("name",        O.Utf8Char255)
-    /* @3 */ def slug    = column[String]          ("string",      O.AsciiChar8) ////TODO: Asciiの必要
+    /* @3 */ def slug    = column[String]          ("slug",      O.AsciiChar8) ////TODO: Asciiの必要
     /* @4 */ def color   = column[Category.Color]  ("color",      O.UInt8)
     /* @5 */ def updatedAt = column[LocalDateTime] ("updated_at", O.TsCurrent)
     /* @6 */ def createdAt = column[LocalDateTime] ("created_at", O.Ts)
