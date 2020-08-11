@@ -60,7 +60,7 @@ class CategoryController @Inject()(
     }
   }
 
-  def showCategory(id: Long) = Action.async { implicit request =>
+  /*def showCategory(id: Long) = Action.async { implicit request =>
     //idが存在して、値が一致する場合
     for {
       category <- CategoryRepository.get(Category.Id(id))
@@ -70,5 +70,5 @@ class CategoryController @Inject()(
         //val vv
       }
     }
-  }
+  }*/
 }
