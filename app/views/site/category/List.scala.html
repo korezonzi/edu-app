@@ -2,5 +2,10 @@
 @(vv: model.site.category.ViewValueCategoryList)(implicit request: RequestHeader)
 
 @common.Default(vv){
-  
+  @for(category <- vv.categorySeq) {
+    <ul>
+      <li>こ</li>
+      <li>@category.name</li>
+    </ul>
+  }
 }

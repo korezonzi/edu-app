@@ -30,6 +30,22 @@ class CategoryController @Inject()(
 //    }
 //  }
 
+  /*val form = Form(
+    mapping(
+      "name"  -> nonEmptyText(maxLength = 120),
+      "slug"  -> nonEmptyText,
+      "color" -> number
+    )(Category.FormValue.apply)(Category.FormValue.unapply)
+  )*/
+
+  val formData = Form(
+    mapping(
+    "name"  -> text.verifying("カテゴリ名を入力してください", {_.nonEmpty}),
+    "slug"  -> text.verifying("slugを入力してくだ際", {_.nonEmpty}),
+    "color" -> number
+  )(Category.FormValue.apply)(Category.FormValue.unapply)
+  )
+
   def showAllCategory() = Action.async { implicit request =>
     for {
       categorySeq <- CategoryRepository.getAll
@@ -41,6 +57,18 @@ class CategoryController @Inject()(
         jsSrc       = Seq("main.js")
       )
       Ok(views.html.site.category.List(vv))
+    }
+  }
+
+  def showCategory(id: Long) = Action.async { implicit request =>
+    //idが存在して、値が一致する場合
+    for {
+      category <- CategoryRepository.get(Category.Id(id))
+    } yield {
+      case None => NotFound("そのカテゴリーはありません")
+      case Some(category) => {
+        //val vv
+      }
     }
   }
 }
