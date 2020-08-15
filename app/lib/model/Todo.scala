@@ -10,7 +10,7 @@ case class Todo(
   cid:       Category.Id,
   title:     String,
   body:      String,
-  status:    Status,
+  status:    Status        = Status.IS_TODO,
   updatedAt: LocalDateTime = NOW,
   createdAt: LocalDateTime = NOW
 ) extends EntityModel[Id]
@@ -18,8 +18,8 @@ case class Todo(
 object Todo {
   val Id          = the[Identity[Id]]
   type Id         = Long @@ Todo
-  type WithNoId   = Entity.WithNoId[Id, Todo]
-  type EmbeddedId = Entity.EmbeddedId[Id, Todo]
+  type WithNoId   = Entity.WithNoId   [Id, Todo]
+  type EmbeddedId = Entity.EmbeddedId [Id, Todo]
 
   //ステータス定義
   //~~~~~~~~~~~~
@@ -32,10 +32,10 @@ object Todo {
   }
 
   //フォームの値をバインドするため
-  /*case class FormValue(
+  case class FormValue(
     cid:    Long,
     title:  String,
     body:   String,
     status: Option[Int]
-  )*/
+  )
 }
