@@ -12,11 +12,14 @@ import slick.jdbc.JdbcProfile
 trait SlickResourceProvider[P <: JdbcProfile] {
 
   implicit val driver: P
+  //テーブル定義
   object UserTable     extends UserTable
   object CategoryTable extends CategoryTable
+  object TodoTable     extends TodoTable
   // --[ テーブル定義 ] --------------------------------------
   lazy val AllTables = Seq(
     UserTable,
-    CategoryTable
+    CategoryTable,
+    TodoTable,
   )
 }
