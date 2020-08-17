@@ -41,7 +41,7 @@ class CategoryController @Inject()(
   val formData = Form(
     mapping(
     "name"  -> text.verifying("カテゴリ名を入力してください", {_.nonEmpty}),
-    "slug"  -> text.verifying("slugを入力してくだ際", {_.nonEmpty}),
+    "slug"  -> text.verifying("slugを入力してください", {_.nonEmpty}),
     "color" -> number
   )(Category.FormValue.apply)(Category.FormValue.unapply)
   )
