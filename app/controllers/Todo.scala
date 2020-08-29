@@ -18,8 +18,9 @@ import lib.model.Todo
 import lib.model.Todo.FormValue
 import lib.persistence.default._
 import lib.persistence.CategoryRepository._
+import model.common.ViewValueMessage
 import model.common.component.ViewValueCategory
-import model.site.todo.ViewValueTodoList
+import model.site.todo.{ViewValueTodoForm, ViewValueTodoList}
 //import model.common.ViewValueMessage
 import model.common.component.ViewValueTodo
 import model.site.category._
@@ -61,5 +62,44 @@ class TodoController @Inject()(
       )
       Ok(views.html.site.todo.List(vv))
     }
+  }
+
+  //新規作成画面
+  def showAddPage = Action.async{implicit request =>
+    for {
+      allCategory <- CategoryRepository.getAll
+    } yield {
+      val vv = ViewValueTodoForm(
+        title = "TODO作成",
+        allCategory = allCategory.map(ViewValueCategory.create(_)),
+        formData = formData,
+        postUrl = routes.TodoController.showAllTodo(),
+        cssSrc = Seq("main.css"),
+        jsSrc = Seq("main.js")
+      )
+      Ok(views.html.site.todo.Add(vv))
+    }
+  }
+
+  //TODOをinsert
+  def add = action.async{implicit request =>
+    formData.bindFromRequest.fold(
+      errors => Future.successful(BadRequest("不正な値です。フォームに値をバインドできませんでした。")),
+      data   => {
+        val entity = Todo(None, Category.Id(data.cid), data.title, data.body).toWithNoId
+        for {
+          _ <- TodoRepository.add(entity)
+        } yield {
+          //ViewValue作成
+          val vv = ViewValueMessage(
+            title = "成功",
+            message = "TODOを作成しました",
+            cssSrc = Seq("main.css"),
+            jsSrc = Seq("main.js")
+          )
+          Ok("")
+        }
+      }
+    )
   }
 }
