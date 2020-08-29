@@ -1,0 +1,60 @@
+/**
+ * to-do list
+ */
+
+/*********** TODO新規作成ページ ************/
+
+.todo-list {
+  position:      relative;
+  width:         950px;
+  margin:        50px 0px;
+  padding:       30px 15px;
+  border-radius: 7px;
+  box-shadow:    4px 4px 4px 4px rgba(0,0,0,0.06);
+}
+
+.todo-list .todo-list__to-detail {
+  position:      absolute;
+  right:         50px;
+  bottom:        20px;
+}
+
+.todo-list .todo-list__delete-button {
+  position:      absolute;
+  right:         100px;
+  bottom:        20px;
+}
+
+.todo-list .todo-list__category-name {
+  position:      absolute;
+  right:         30px;
+  display:       block;
+  height:        35px;
+  width:         150px;
+  line-height:   35px;
+  text-align:    center;
+  border-radius: 10px;
+}
+
+.todo-list .todo-list__content-status {
+  display:           inline-block;
+  padding:           0 10px;
+  text-align:        center;
+  line-height:       30px;
+  min-width:         60px;
+  height:            30px;
+  background-color:  grey;
+  border-radius:     6px;
+  color:             white;
+  font-weight:       bold;
+}
+
+.link-to-add-todo {
+  float:         right;
+}
+
+/*********** form ************/
+.form {
+  margin:        30px 0;
+  border:        none;
+}

@@ -1,15 +1,28 @@
+@import model.common.component.ViewValueCategory
+@import model.common.component.ViewValueTodo
 @(vv: model.site.todo.ViewValueTodoList)(implicit request: RequestHeader)
 
 @common.Default(vv){
   <a href= @controllers.routes.HomeController.index>HOMEに戻る</a>
-
+  <a href=@controllers.routes.TodoController.showAddPage>新規作成</a>
   @if(vv.todoList.nonEmpty) {
     @for((todo, category) <- vv.todoList) {
-      <ul>
-        <li>@todo.title</li>
-        <li>@todo.body</li>
-        <li>@todo.status</li>
-      </ul>
+      @todoList(todo, category)
     }
+  } else {
+    <h2>該当なし</h2>
   }
+}
+
+@todoList(todo: ViewValueTodo, category: ViewValueCategory) = {
+  <div class = "todo-list">
+    <span class = "tod-list__category-name" style="background-color: @category.color.value">
+      @category.name
+    </span>
+    <div class="todo-list__content">
+      <span class="todo-list__content-status">@todo.status.name</span>
+      <h3 class="todo-list__content-title">[@todo.title]</h3>
+      <p>@todo.body</p>
+    </div>
+  </div>
 }

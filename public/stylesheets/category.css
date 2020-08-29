@@ -1,0 +1,50 @@
+/**
+ * to-do list
+ */
+
+/*********** カテゴリ一覧ページ ************/
+.category-list {
+  position:      relative;
+  width:         950px;
+  margin:        50px 0px;
+  padding:       30px 15px;
+  border-radius: 7px;
+  box-shadow:    4px 4px 4px 4px rgba(0,0,0,0.06);
+}
+
+.category-list .category-list__show-todo-button {
+  position:   absolute;
+  right:      50px;
+  top:        20px;
+}
+
+.category-list .category-list__link-to-category-detail {
+  position:      absolute;
+  right:         50px;
+  bottom:        20px;
+}
+
+.category-list .category-list__delete-button {
+  position:      absolute;
+  right:         100px;
+  bottom:        20px;
+}
+
+.category-list .category-list__color {
+  width:          15px;
+  height:         15px;
+  display:        inline-block;
+  vertical-align: text-bottom;
+}
+
+/*********** カテゴリ新規作成ページ ************/
+
+.link-to-add-category {
+  float:         right;
+}
+
+/******* form *******/
+.form {
+  margin:         30px 0;
+  border:         none;
+}
