@@ -1,0 +1,6 @@
+@(vv: model.common.ViewValueMessage)(implicit request: RequestHeader)
+
+@common.Default(vv) {
+  <a href=@controllers.routes.HomeController.index()>HOMEに戻る</a>
+  <h1>@vv.message</h1>
+}

@@ -97,7 +97,7 @@ class TodoController @Inject()(
             cssSrc = Seq("main.css"),
             jsSrc = Seq("main.js")
           )
-          Ok("")
+          Ok(views.html.common.Success(vv))
         }
       }
     )
