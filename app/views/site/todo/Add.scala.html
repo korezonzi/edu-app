@@ -1,4 +1,4 @@
-@(vv: model.site.todo.ViewValueTodoForm)(implicit request: RequestHeader)
+@(vv: model.site.todo.ViewValueTodoForm)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
 @common.Default(vv){
   <a href=@controllers.routes.HomeController.index >TOPに戻る</a>

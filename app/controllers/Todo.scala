@@ -82,7 +82,7 @@ class TodoController @Inject()(
   }
 
   //TODOをinsert
-  def add = action.async{implicit request =>
+  def add = Action.async{implicit request =>
     formData.bindFromRequest.fold(
       errors => Future.successful(BadRequest("不正な値です。フォームに値をバインドできませんでした。")),
       data   => {
@@ -92,10 +92,10 @@ class TodoController @Inject()(
         } yield {
           //ViewValue作成
           val vv = ViewValueMessage(
-            title = "成功",
+            title   = "TODO新規作成",
             message = "TODOを作成しました",
-            cssSrc = Seq("main.css"),
-            jsSrc = Seq("main.js")
+            cssSrc  = Seq("main.css"),
+            jsSrc   = Seq("main.js")
           )
           Ok(views.html.common.Success(vv))
         }
