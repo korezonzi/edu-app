@@ -2,10 +2,10 @@
 @(vv: model.site.category.ViewValueCategoryList)(implicit request: RequestHeader)
 
 @common.Default(vv){
+  <a href=@controllers.routes.HomeController.index > HOMEに戻る</a>
   @for(category <- vv.categorySeq) {
     <ul>
-      <li>こ</li>
-      <li>@category.name</li>
+      <li style="background-color: @category.color.value;width:200px;height: 80px;list-style: none;line-height: 80px;">@category.name</li>
     </ul>
   }
 }
