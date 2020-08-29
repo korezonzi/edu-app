@@ -1,8 +1,10 @@
-@(vv: model.site.todo.ViewValueTodoForm)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+@(vv: model.site.todo.ViewValueTodoForm)(
+  implicit request: RequestHeader, messagesProvider: MessagesProvider
+)
 
 @common.Default(vv){
   <a href=@controllers.routes.HomeController.index >TOPに戻る</a>
-  @helper.form(vv.postUrl) {
+  @helper.form(action= helper.CSRF( vv.postUrl)) {
     <fieldset>
       @helper.select(
         field = vv.formData("cid"),

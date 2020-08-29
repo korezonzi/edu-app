@@ -33,13 +33,19 @@ class TodoController @Inject()(
 ) extends BaseController with I18nSupport {
   implicit val ec = defaultExecutionContext
 
+  // CSRFトークンをチェックするハンドラー
+  object CSRFErrorHandler extends play.filters.csrf.CSRF.ErrorHandler {
+    def handle(req: RequestHeader, msg: String) =
+      Future.successful(Redirect(routes.TodoController.showAllTodo()))
+  }
+
   val formData = Form(
     mapping(
       "cid"   -> longNumber,
       "title" -> text.verifying("タイトルを入力してください", {_.nonEmpty}),
       "body"  -> text.verifying("テキストを入力してください", {_.nonEmpty}),
       "status"-> optional(number)
-    )(FormValue.apply)(FormValue.unapply)
+    )(Todo.FormValue.apply)(Todo.FormValue.unapply)
   )
 
   //TODO一覧
@@ -57,7 +63,7 @@ class TodoController @Inject()(
       val vv = ViewValueTodoList(
         title    = "TODO一覧",
         todoList = vvTodoWithCategory,
-        cssSrc   = Seq("main.css"),
+        cssSrc   = Seq("main.css","todo.css"),
         jsSrc    = Seq("main.js")
       )
       Ok(views.html.site.todo.List(vv))
@@ -70,21 +76,21 @@ class TodoController @Inject()(
       allCategory <- CategoryRepository.getAll
     } yield {
       val vv = ViewValueTodoForm(
-        title = "TODO作成",
+        title       = "TODO作成",
         allCategory = allCategory.map(ViewValueCategory.create(_)),
-        formData = formData,
-        postUrl = routes.TodoController.showAllTodo(),
-        cssSrc = Seq("main.css"),
-        jsSrc = Seq("main.js")
+        formData    = formData,
+        postUrl     = routes.TodoController.add,
+        cssSrc      = Seq("main.css", "todo.css"),
+        jsSrc       = Seq("main.js")
       )
       Ok(views.html.site.todo.Add(vv))
     }
   }
 
   //TODOをinsert
-  def add = Action.async{implicit request =>
+  def add = checkToken(Action.async{implicit request =>
     formData.bindFromRequest.fold(
-      errors => Future.successful(BadRequest("不正な値です。フォームに値をバインドできませんでした。")),
+      errors => Future.successful(BadRequest("不正な値です。フォームに値をバインドできませんでした。: "+ errors)),
       data   => {
         val entity = Todo(None, Category.Id(data.cid), data.title, data.body).toWithNoId
         for {
@@ -101,5 +107,5 @@ class TodoController @Inject()(
         }
       }
     )
-  }
+  }, CSRFErrorHandler)
 }
