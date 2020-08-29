@@ -3,7 +3,7 @@
 )
 
 @common.Default(vv){
-  <a href=@controllers.routes.HomeController.index >TOPに戻る</a>
+  <a class = "link-to-top"  href=@controllers.routes.HomeController.index >TOPに戻る</a>
   @helper.form(action= helper.CSRF( vv.postUrl)) {
     <fieldset>
       @helper.select(

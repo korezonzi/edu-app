@@ -3,8 +3,8 @@
 @(vv: model.site.todo.ViewValueTodoList)(implicit request: RequestHeader)
 
 @common.Default(vv){
-  <a href= @controllers.routes.HomeController.index>HOMEに戻る</a>
-  <a href=@controllers.routes.TodoController.showAddPage>新規作成</a>
+  <a class = "link-to-top"  href= @controllers.routes.HomeController.index>HOMEに戻る</a>
+  <a class="link-to-add-todo" href=@controllers.routes.TodoController.showAddPage>新規作成</a>
   @if(vv.todoList.nonEmpty) {
     @for((todo, category) <- vv.todoList) {
       @todoList(todo, category)
