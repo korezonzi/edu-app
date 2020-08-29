@@ -1,0 +1,17 @@
+@(vv: model.site.todo.ViewValueTodoForm)(implicit request: RequestHeader)
+
+@common.Default(vv){
+  <a href=@controllers.routes.HomeController.index >TOPに戻る</a>
+  @helper.form(vv.postUrl) {
+    <fieldset>
+      @helper.select(
+        field = vv.formData("cid"),
+        options = vv.allCategory.map(ca => (ca.id.toString, ca.name)),
+        '_label -> "カテゴリー",
+      )
+      @helper.inputText(vv.formData("title"), '_label -> "タイトル")
+      @helper.textarea(vv.formData("body"), '_lable -> "内容")
+    </fieldset>
+    <input type="submit" value = "追加" >
+  }
+}
