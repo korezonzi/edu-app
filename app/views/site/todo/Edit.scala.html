@@ -1,0 +1,19 @@
+@(vv: model.site.todo.ViewValueTodoForm)(
+  implicit request: RequestHeader, messagesProvider: MessagesProvider
+)
+
+@common.Default(vv) {
+  <a  class = "link-to-top" href=@routes.HomeController.index >HOMEに戻る</a>
+  @helper.form(action= helper.CSRF(vv.postUrl)) {
+    <fieldset class = "form">
+      @helper.select(
+        field = vv.formData("cid"),
+        options = vv.allCategory.map(ca => (ca.id.toString, ca.name)),
+        '_label -> "カテゴリー",
+      )
+      @helper.inputText(vv.formData("title"), '_label -> "タイトル")
+      @helper.textarea(vv.formData("body"), 'label -> "内容")
+    </fieldset>
+    <input type="submit" value = "保存">
+  }
+}
