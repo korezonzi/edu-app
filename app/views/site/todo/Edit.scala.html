@@ -1,10 +1,14 @@
+@import lib.model.Todo.FormValue
+@import lib.model.Todo.Status
+@import helper._
+
 @(vv: model.site.todo.ViewValueTodoForm)(
   implicit request: RequestHeader, messagesProvider: MessagesProvider
 )
 
 @common.Default(vv) {
   <a  class = "link-to-top" href=@routes.HomeController.index >HOMEに戻る</a>
-  @helper.form(action= helper.CSRF(vv.postUrl)) {
+  @helper.form(action = helper.CSRF(vv.postUrl)) {
     <fieldset class = "form">
       @helper.select(
         field = vv.formData("cid"),
@@ -13,6 +17,11 @@
       )
       @helper.inputText(vv.formData("title"), '_label -> "タイトル")
       @helper.textarea(vv.formData("body"), 'label -> "内容")
+      @helper.select(
+        field = vv.formData("status"),
+        options = Status.values.map(v => (v.code.toString, v.name)),
+        '_label -> "ステータス"
+      )
     </fieldset>
     <input type="submit" value = "保存">
   }

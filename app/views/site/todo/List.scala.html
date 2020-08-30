@@ -16,6 +16,9 @@
 
 @todoList(todo: ViewValueTodo, category: ViewValueCategory) = {
   <div class = "todo-list">
+    <a class="todo-list__to-detail" href = @routes.TodoController.showEditForm(todo.id)>
+      編集画面
+    </a>
     <span class = "tod-list__category-name" style="background-color: @category.color.value">
       @category.name
     </span>
