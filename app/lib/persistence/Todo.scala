@@ -12,7 +12,7 @@ case class TodoRepository[P <: JdbcProfile]()(implicit  val driver: P)
   import api._
 
   def get(id: Id): Future[Option[EntityEmbeddedId]] = {
-    RunDBAction(TodoTable, "sleve") { _
+    RunDBAction(TodoTable, "slave") { _
       .filter(_.id === id)
       .result.headOption
     }
