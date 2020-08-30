@@ -29,7 +29,7 @@ import scala.languageFeature.postfixOps
 
 class TodoController @Inject()(
   val controllerComponents: ControllerComponents,
-  val checkToken: CSRFCheck
+  val checkToken:           CSRFCheck
 ) extends BaseController with I18nSupport {
   implicit val ec = defaultExecutionContext
 
@@ -42,8 +42,8 @@ class TodoController @Inject()(
   val formData = Form(
     mapping(
       "cid"   -> longNumber,
-      "title" -> text.verifying("タイトルを入力してください", {_.nonEmpty}),
-      "body"  -> text.verifying("テキストを入力してください", {_.nonEmpty}),
+      "title" -> text.verifying("タイトルを入力してください",{!_.isEmpty()}),
+      "body"  -> text.verifying("テキストを入力してください", {!_.isEmpty()}),
       "status"-> optional(number)
     )(Todo.FormValue.apply)(Todo.FormValue.unapply)
   )
@@ -100,6 +100,69 @@ class TodoController @Inject()(
           val vv = ViewValueMessage(
             title   = "TODO新規作成",
             message = "TODOを作成しました",
+            cssSrc  = Seq("main.css"),
+            jsSrc   = Seq("main.js")
+          )
+          Ok(views.html.common.Success(vv))
+        }
+      }
+    )
+  }, CSRFErrorHandler)
+
+  //TODO編集画面
+  def showEditForm(id: Long) = Action.async{implicit request =>
+    for {
+      allCategory <- CategoryRepository.getAll
+      todo        <- TodoRepository.get(Todo.Id(id))
+    } yield {
+      todo match {
+        case None    => NotFound("データの取得に失敗しました")
+        case Some(t) => {
+          //fill: フォームに既存の値を入れておく
+          val formDataWithDefault = formData.fill(Todo.FormValue(
+            t.id,
+            t.v.title,
+            t.v.body,
+            Some(t.v.status.code.toInt)
+          ))
+          //ViewValue作成
+          val vv = ViewValueTodoForm(
+            title       = "TODO編集",
+            allCategory = allCategory.map(ViewValueCategory.create(_)),
+            formData    = formDataWithDefault,
+            postUrl     = routes.TodoController.edit(t.id),
+            cssSrc      = Seq("main.css", "todo,css"),
+            jsSrc       = Seq("main.js")
+          )
+          Ok(views.html.site.todo.Edit(vv))
+        }
+      }
+    }
+  }
+
+  //TODOをUPDATE
+  def edit(id: Long)  = checkToken(Action.async{implicit request =>
+    formData.bindFromRequest.fold(
+      errors => Future.successful(BadRequest("不正な値によるバインド。")),
+      data   => {
+        for {
+          todo <- TodoRepository.get(Todo.Id(id))
+          _    <- todo match {
+            case None    => Future.successful(NotFound("お探しのデータはありませんでした"))
+            case Some(v) => {
+              val newEntity = v.map(_.copy(
+                cid   = Category.Id(data.cid),
+                title  = data.title,
+                body   = data.body,
+                status = Todo.Status(data.status.get.toShort)
+              ))
+              TodoRepository.update(newEntity)
+            }
+          }
+        } yield {
+          val vv = ViewValueMessage(
+            title   = "TODO編集",
+            message = "TODOを編集しました！",
             cssSrc  = Seq("main.css"),
             jsSrc   = Seq("main.js")
           )

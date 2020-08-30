@@ -8,7 +8,14 @@ GET     /                             controllers.HomeController.index
 #カテゴリー一覧
 GET     /category/all                 controllers.CategoryController.showAllCategory
 
+#TOOD
+#TODO一覧
 GET     /todo/all                     controllers.TodoController.showAllTodo
+#TODO追加
+GET     /todo/add/form                controllers.TodoController.showAddPage
+POST    /todo/add                     controllers.TodoController.add
+GET     /todo/$id<[0-9]+>             controllers.TodoController.showEditForm(id: Long)
+POST    /todo/$id<[0-9]+>/edit        controllers.TodoController.edit(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
