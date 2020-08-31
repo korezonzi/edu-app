@@ -16,6 +16,9 @@
 
 @todoList(todo: ViewValueTodo, category: ViewValueCategory) = {
   <div class = "todo-list">
+    @helper.form(helper.CSRF(routes.TodoController.delete(todo.id))) {
+      <input class = "todo-list__delete-button" type="submit" value="削除">
+    }
     <a class="todo-list__to-detail" href = @routes.TodoController.showEditForm(todo.id)>
       編集画面
     </a>

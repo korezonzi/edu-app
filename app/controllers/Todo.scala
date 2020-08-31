@@ -171,4 +171,19 @@ class TodoController @Inject()(
       }
     )
   }, CSRFErrorHandler)
+
+  //TODOをDELETE
+  def delete(id: Long) = checkToken(Action.async { implicit request =>
+    for {
+      todo <- TodoRepository.remove(Todo.Id(id))
+    } yield {
+      val vv    = ViewValueMessage(
+        title   = "TODOを削除",
+        message = "TODOを削除しました！",
+        cssSrc  = Seq("main.css"),
+        jsSrc   = Seq("js.css")
+      )
+      Ok(views.html.common.Success(vv))
+    }
+  }, CSRFErrorHandler)
 }
